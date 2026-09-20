@@ -4,21 +4,16 @@ import { z } from "zod";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
-import { auth } from "@/firebase/client";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-} from "firebase/auth";
-
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 
-import { signIn, signUp } from "@/lib/actions/auth.action";
 import FormField from "./FormField";
+
+type FormType = "sign-in" | "sign-up";
 
 
 const authFormSchema = (type: FormType) => {
@@ -42,7 +37,7 @@ const AuthForm = ({type}:{type: FormType}) => {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    function onSubmit() {
         try {
             if(type === "sign-up") {
                 toast.success("Account created successfully! Please sign in.");

@@ -2,7 +2,7 @@
 
 Practise job interviews with an AI interviewer that speaks, listens and scores every answer, then apply to jobs matched to your skills. Recruiters screen candidates with AI interviews, and companies post roles and follow applicants, all in one connected platform.
 
-**Live demo:** https://ida-eng.github.io/portfolio/hireloop/
+**Live demo:** https://ai-interview-platform-frhn.vercel.app (with Gemini AI feedback)
 
 > Portfolio project by [Aida Topalli](https://ida-eng.github.io/portfolio/). Companies, jobs and people are fictional. Switch between the candidate, recruiter and company views from the avatar menu.
 

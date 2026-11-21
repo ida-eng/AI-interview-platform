@@ -21,15 +21,20 @@ Keep the items in the same order as the answers. An empty answer scores 0.
 ${clean.map((a, i) => `Q${i + 1}: ${a.question}\nA${i + 1}: ${a.answer || "(no answer)"}`).join("\n\n")}`;
 
   try {
-    const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: { responseMimeType: "application/json", temperature: 0.4 },
-      }),
-    });
+    // Model names change over time, so try the configured one first and then current aliases.
+    const models = [process.env.GEMINI_MODEL, "gemini-flash-latest", "gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-lite-latest"].filter(Boolean);
+    let r;
+    for (const model of models) {
+      r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: "application/json", temperature: 0.4 },
+        }),
+      });
+      if (r.status !== 404) break;
+    }
     if (!r.ok) return res.status(502).json({ error: `Model error ${r.status}` });
     const data = await r.json();
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "{}";

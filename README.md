@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hireloop: AI interview practice + jobs platform
 
-## Getting Started
+Practise job interviews with an AI interviewer that speaks, listens and scores every answer, then apply to jobs matched to your skills. Recruiters screen candidates with AI interviews, and companies post roles and follow applicants, all in one connected platform.
 
-First, run the development server:
+**Live demo:** _added after deploy_
+
+> Portfolio project by [Aida Topalli](https://ida-eng.github.io/portfolio/). Companies, jobs and people are fictional. Switch between the candidate, recruiter and company views from the avatar menu.
+
+## What you can do
+
+**Candidates**
+- Voice mock interviews for 10 roles (engineering, data, product, design, sales, customer success): behavioural, technical or mixed, 3–7 questions
+- The interviewer reads questions aloud (Web Speech API); answer by voice with live transcription and a mic level meter, or type
+- Per-answer scores for structure (STAR), relevance, clarity, depth and confidence, with filler words highlighted, strengths, improvements and coach tips
+- Dashboard with readiness score, streak, skill radar, trends and history
+- Job board with search, filters, salary slider, saved jobs and a skill-based match score; practise for a specific job before applying
+- Application tracker that updates when a recruiter moves you forward
+
+**Recruiters**
+- Drag-and-drop pipeline across five stages, filtered by role
+- Candidate profiles with AI scores; invite anyone to an AI screening
+- Talent search by skill and minimum interview score
+
+**Companies**
+- Post jobs with validation and a live preview; open and close listings
+- Views, applicants and view-to-apply conversion per listing
+
+Everything is connected: a job a company posts appears for candidates, an application shows up in the recruiter's pipeline, a screening invite lands on the candidate's dashboard, and the finished screening score flows back to the recruiter.
+
+## AI feedback
+
+Answers are scored instantly in the browser by a rule-based analyser (`src/analyzer.ts`, unit-tested). If `GEMINI_API_KEY` is set on Vercel, the serverless function in `api/feedback.js` asks Google Gemini to refine the written feedback and scores; if the call fails, the app falls back to the built-in analyser.
+
+## Tech
+
+React 19 · TypeScript · Vite · Web Speech API (speech synthesis + recognition) · Web Audio API · Vercel serverless function · Google Gemini (optional) · localStorage persistence · hand-written CSS and SVG charts
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm test            # analyser unit tests (Node 22+)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Import the repository on Vercel (framework: Vite). Optionally add `GEMINI_API_KEY` (free from Google AI Studio) under Environment Variables and redeploy.

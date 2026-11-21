@@ -33,7 +33,7 @@ ${clean.map((a, i) => `Q${i + 1}: ${a.question}\nA${i + 1}: ${a.answer || "(no a
           generationConfig: { responseMimeType: "application/json", temperature: 0.4 },
         }),
       });
-      if (r.status !== 404) break;
+      if (![404, 429, 500, 503].includes(r.status)) break; // not found or busy: try the next model
     }
     if (!r.ok) return res.status(502).json({ error: `Model error ${r.status}` });
     const data = await r.json();
